@@ -2,34 +2,40 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
+  const [email, setEmail]     = useState('');
   const [password, setPassword] = useState('');
-
   const [errorMsg, setErrorMsg] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/token/', { username, password });
-      localStorage.setItem('accessToken', response.data.access);
-      localStorage.setItem('refreshToken', response.data.refresh);
-      navigate('/dashboard');
+      await api.post('/register/', { username, email, password });
+      // Registo ok; redirecionar para login
+      navigate('/');
     } catch (error) {
-      setErrorMsg('Credenciais inválidas ou erro no servidor.');
+      setErrorMsg('Erro ao registar utilizador. ' + error.response?.data?.error);
     }
   };
 
   return (
     <div className="auth-container fade-in">
-      <h2>Iniciar Sessão</h2>
-      <form onSubmit={handleLogin} className="auth-form">
+      <h2>Registar Conta</h2>
+      <form onSubmit={handleRegister} className="auth-form">
         <input
           type="text"
           placeholder="Utilizador"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input
@@ -39,14 +45,14 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Entrar</button>
+        <button type="submit">Registar</button>
       </form>
       {errorMsg && <p className="error-message">{errorMsg}</p>}
       <p>
-        Não tens conta? <a href="/register">Regista-te aqui</a>
+        Já tens conta? <a href="/">Inicia sessão</a>
       </p>
     </div>
   );
 }
 
-export default Login;
+export default Register;

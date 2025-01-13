@@ -1,2 +1,4 @@
 test.sh
 backend/personal_finance_tracker/db.sqlite3
+backend/personal_finance_tracker/__pycache__/*
+backend/finance_app/__pycache__/*

@@ -3,99 +3,130 @@ import api from '../services/api';
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
-  const [amount, setAmount] = useState('');
-  const [categoryId, setCategoryId] = useState('');
-  const [type, setType] = useState('expense');
-  const [categories, setCategories] = useState([]);
-  const [date, setDate] = useState('');
+  const [categories, setCategories]     = useState([]);
+  const [accounts, setAccounts]         = useState([]);
+
+  // Form inputs
+  const [accountId, setAccountId]       = useState('');
+  const [categoryId, setCategoryId]     = useState('');
+  const [type, setType]                 = useState('expense');
+  const [amount, setAmount]             = useState('');
+  const [description, setDescription]   = useState('');
+  const [date, setDate]                 = useState('');
+
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    fetchTransactions();
-    fetchCategories();
+    loadData();
   }, []);
 
-  const fetchTransactions = async () => {
+  const loadData = async () => {
     try {
-      const res = await api.get('/transactions/');
-      setTransactions(res.data);
-    } catch (err) {
-      console.error(err);
+      const [txRes, catRes, accRes] = await Promise.all([
+        api.get('/transactions/'),
+        api.get('/categories/'),
+        api.get('/accounts/')
+      ]);
+      setTransactions(txRes.data);
+      setCategories(catRes.data);
+      setAccounts(accRes.data);
+      // Se quiseres selecionar por omissão a primeira conta:
+      if (accRes.data.length > 0) setAccountId(accRes.data[0].id);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const res = await api.get('/categories/');
-      setCategories(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleAddTransaction = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg('');
     try {
-      const newTransaction = {
-        transaction_type: type,
-        amount: amount,
+      await api.post('/transactions/', {
+        account: accountId,
         category_id: categoryId,
-        date: date,
-        account: 1,
-      };
-      await api.post('/transactions/', newTransaction);
+        transaction_type: type,
+        amount,
+        description,
+        date
+      });
+      // Limpa form e recarrega
       setAmount('');
-      setCategoryId('');
-      setType('expense');
+      setDescription('');
       setDate('');
-      fetchTransactions();
-    } catch (err) {
-      console.error(err);
+      loadData();
+    } catch (error) {
+      setErrorMsg('Erro ao criar transação.');
     }
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="container fade-in">
       <h2>Transações</h2>
-      <form onSubmit={handleAddTransaction}>
-        <input
-          type="number"
-          placeholder="Valor"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-        />
+      <form onSubmit={handleSubmit} className="transaction-form">
+        <label>Conta:</label>
+        <select value={accountId} onChange={(e) => setAccountId(e.target.value)}>
+          {accounts.map(acc => (
+            <option key={acc.id} value={acc.id}>{acc.name}</option>
+          ))}
+        </select>
+
+        <label>Tipo:</label>
         <select value={type} onChange={(e) => setType(e.target.value)}>
           <option value="expense">Despesa</option>
           <option value="income">Rendimento</option>
         </select>
-        <select
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-          required
-        >
-          <option value="">Escolhe a categoria</option>
-          {categories.map((cat) => (
-            <option value={cat.id} key={cat.id}>
+
+        <label>Categoria:</label>
+        <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+          <option value="">--Selecione--</option>
+          {categories.map(cat => (
+            <option key={cat.id} value={cat.id}>
               {cat.name} ({cat.category_type})
             </option>
           ))}
         </select>
+
+        <label>Valor (€):</label>
+        <input
+          type="number"
+          step="0.01"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          required
+        />
+
+        <label>Data:</label>
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           required
         />
+
+        <label>Descrição:</label>
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+
         <button type="submit">Adicionar</button>
       </form>
+      {errorMsg && <p className="error-message">{errorMsg}</p>}
 
-      <ul>
-        {transactions.map((t) => (
-          <li key={t.id}>
-            {t.transaction_type} - {t.amount}€ | {t.category ? t.category.name : 'N/A'} | Data: {t.date}
-          </li>
+      <h3>Lista de Transações</h3>
+      <div className="transaction-list">
+        {transactions.map(tx => (
+          <div key={tx.id} className="transaction-list-item">
+            <div>
+              <strong>{tx.transaction_type.toUpperCase()}</strong> - {tx.amount}€  
+              {' '}| {tx.category ? tx.category.name : 'N/A'} 
+              {' '}| Data: {tx.date}
+            </div>
+            <div>{tx.description}</div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

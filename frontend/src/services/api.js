@@ -1,20 +1,18 @@
 import axios from 'axios';
 
-// Configurar a base URL do Django
+const API_BASE_URL = 'http://127.0.0.1:8000/api';
+
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: API_BASE_URL,
 });
 
-// Interceptor para incluir token (JWT ou similar)
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// Intercepta cada pedido e adiciona o token se existir
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => Promise.reject(error));
 
 export default api;

@@ -1,12 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavBar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    navigate('/');
+  };
+
   return (
-    <nav style={{ padding: '10px', backgroundColor: '#eee' }}>
-      <Link to="/dashboard" style={{ marginRight: '10px' }}>Dashboard</Link>
-      <Link to="/transactions" style={{ marginRight: '10px' }}>Transações</Link>
-      <Link to="/">Sair</Link>
+    <nav className="navbar">
+      <div className="nav-left">
+        <Link to="/dashboard" className="logo">FinanceTracker</Link>
+      </div>
+      <div className="nav-right">
+        <Link to="/dashboard">Dashboard</Link>
+        <Link to="/transactions">Transações</Link>
+        <Link to="/budgets">Orçamentos</Link>
+        <button onClick={handleLogout} className="logout-btn">Sair</button>
+      </div>
     </nav>
   );
 }

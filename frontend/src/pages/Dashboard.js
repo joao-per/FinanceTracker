@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Pie, Bar } from 'react-chartjs-2';
 import api from '../services/api';
-import { Bar, Pie } from 'react-chartjs-2';
 
 function Dashboard() {
   const [transactions, setTransactions] = useState([]);
-  const [categoriesData, setCategoriesData] = useState([]);
 
   useEffect(() => {
     fetchTransactions();
@@ -14,53 +13,64 @@ function Dashboard() {
     try {
       const res = await api.get('/transactions/');
       setTransactions(res.data);
-
-      const categorySums = {};
-      res.data.forEach((t) => {
-        const cat = t.category ? t.category.name : 'Sem Categoria';
-        if (!categorySums[cat]) categorySums[cat] = 0;
-        if (t.transaction_type === 'expense') {
-          categorySums[cat] += parseFloat(t.amount);
-        }
-      });
-
-      const labels = Object.keys(categorySums);
-      const values = Object.values(categorySums);
-
-      setCategoriesData({
-        labels,
-        datasets: [
-          {
-            label: 'Despesas por Categoria',
-            data: values,
-            backgroundColor: [
-              '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
-            ],
-          },
-        ],
-      });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error('Erro ao buscar transações:', error);
     }
   };
 
-  return (
-    <div style={{ padding: '20px' }}>
-      <h2>Dashboard Financeiro</h2>
-      <div style={{ width: '400px', margin: '0 auto' }}>
-        {categoriesData && categoriesData.labels && (
-          <Pie data={categoriesData} />
-        )}
-      </div>
+  // Agrupar despesas por categoria
+  const expenseData = {};
+  // Agrupar rendimentos por categoria
+  const incomeData = {};
 
-      <h3>Transações Recentes</h3>
-      <ul>
-        {transactions.slice(0, 5).map((t) => (
-          <li key={t.id}>
-            {t.transaction_type.toUpperCase()} - {t.amount}€ - {t.category ? t.category.name : 'N/A'} ({t.date})
-          </li>
-        ))}
-      </ul>
+  transactions.forEach((t) => {
+    if (!t.category) return;
+    const catName = t.category.name;
+    if (t.transaction_type === 'expense') {
+      expenseData[catName] = (expenseData[catName] || 0) + parseFloat(t.amount);
+    } else {
+      incomeData[catName] = (incomeData[catName] || 0) + parseFloat(t.amount);
+    }
+  });
+
+  const expenseLabels = Object.keys(expenseData);
+  const expenseValues = Object.values(expenseData);
+  const incomeLabels = Object.keys(incomeData);
+  const incomeValues = Object.values(incomeData);
+
+  return (
+    <div className="container fade-in">
+      <h2>Dashboard Financeiro</h2>
+      <div className="chart-container">
+        <h3>Despesas por Categoria</h3>
+        <Pie
+          data={{
+            labels: expenseLabels,
+            datasets: [
+              {
+                data: expenseValues,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#9966FF', '#FF9F40'],
+              },
+            ],
+          }}
+          options={{ responsive: true }}
+        />
+      </div>
+      <div className="chart-container">
+        <h3>Rendimentos por Categoria</h3>
+        <Pie
+          data={{
+            labels: incomeLabels,
+            datasets: [
+              {
+                data: incomeValues,
+                backgroundColor: ['#4BC0C0', '#FF6384', '#36A2EB', '#FFCE56', '#9966FF'],
+              },
+            ],
+          }}
+          options={{ responsive: true }}
+        />
+      </div>
     </div>
   );
 }
