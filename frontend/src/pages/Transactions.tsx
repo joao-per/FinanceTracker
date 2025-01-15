@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
+import '../css/style.css';
+
 
 function Transactions() {
   const [transactions, setTransactions] = useState([]);
@@ -110,7 +112,11 @@ function Transactions() {
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        <button type="submit">Adicionar</button>
+        <button
+          className="bg-indigo-600 text-white py-2 px-4 rounded transform transition-all duration-300 hover:bg-indigo-700 hover:scale-105"
+        >
+          Adicionar
+        </button>
       </form>
       {errorMsg && <p className="error-message">{errorMsg}</p>}
 
