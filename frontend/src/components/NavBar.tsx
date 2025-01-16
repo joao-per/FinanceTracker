@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// Exemplos de Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faChartPie, faWallet, faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSignOutAlt,
+  faChartPie,
+  faWallet,
+  faFileInvoiceDollar,
+} from '@fortawesome/free-solid-svg-icons';
+import { motion } from 'framer-motion';
 
-function NavBar() {
+const NavBar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,44 +19,69 @@ function NavBar() {
   };
 
   return (
-    <nav className="bg-gray-800 text-white flex justify-between items-center p-4 shadow-md">
+    <motion.nav
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="bg-gray-800 text-white flex justify-between items-center p-4 shadow-md"
+    >
       <div className="flex items-center">
-        <Link to="/dashboard" className="text-xl font-bold hover:text-indigo-400 transition-colors">
+        <Link
+          to="/dashboard"
+          className="text-xl font-bold hover:text-indigo-400 transition-colors"
+        >
           <FontAwesomeIcon icon={faChartPie} className="mr-2" />
           FinanceTracker
         </Link>
       </div>
-      <div className="flex items-center space-x-4">
-        <Link
-          to="/dashboard"
-          className="hover:text-indigo-400 transition-colors"
+      <div className="flex items-center space-x-6">
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
         >
-          Dashboard
-        </Link>
-        <Link
-          to="/transactions"
-          className="hover:text-indigo-400 transition-colors"
+          <Link
+            to="/dashboard"
+            className="hover:text-indigo-400 transition-colors"
+          >
+            Dashboard
+          </Link>
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <FontAwesomeIcon icon={faWallet} className="mr-1" />
-          Transações
-        </Link>
-        <Link
-          to="/budgets"
-          className="hover:text-indigo-400 transition-colors"
+          <Link
+            to="/transactions"
+            className="hover:text-indigo-400 transition-colors"
+          >
+            <FontAwesomeIcon icon={faWallet} className="mr-1" />
+            Transações
+          </Link>
+        </motion.div>
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <FontAwesomeIcon icon={faFileInvoiceDollar} className="mr-1" />
-          Orçamentos
-        </Link>
-        <button
+          <Link
+            to="/budgets"
+            className="hover:text-indigo-400 transition-colors"
+          >
+            <FontAwesomeIcon icon={faFileInvoiceDollar} className="mr-1" />
+            Orçamentos
+          </Link>
+        </motion.div>
+        <motion.button
+          whileHover={{ scale: 1.1, backgroundColor: '#FF8C00' }}
+          whileTap={{ scale: 0.95 }}
           onClick={handleLogout}
           className="bg-orange-500 hover:bg-orange-600 transition-colors text-white py-2 px-4 rounded flex items-center"
         >
           <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
           Sair
-        </button>
+        </motion.button>
       </div>
-    </nav>
+    </motion.nav>
   );
-}
+};
 
 export default NavBar;

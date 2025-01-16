@@ -1,4 +1,3 @@
-// Budgets.tsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
@@ -14,7 +13,7 @@ interface IBudget {
   } | null;
 }
 
-function Budgets() {
+const Budgets: React.FC = () => {
   const navigate = useNavigate();
   const [budgets, setBudgets] = useState<IBudget[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -25,7 +24,6 @@ function Budgets() {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    // Se não houver token, redireciona
     const token = localStorage.getItem('accessToken');
     if (!token) {
       navigate('/');
@@ -41,7 +39,6 @@ function Budgets() {
       setBudgets(res.data);
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
-        // Redirecionar para login
         navigate('/');
       } else {
         setErrorMsg('Erro ao carregar orçamentos');
@@ -83,8 +80,13 @@ function Budgets() {
 
   return (
     <div className="container mx-auto p-4 fade-in">
-      <h2 className="text-2xl font-bold mb-4">Orçamentos</h2>
-      <form className="flex flex-col gap-2 bg-white p-4 shadow-md rounded" onSubmit={handleCreateBudget}>
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        Orçamentos
+      </h2>
+      <form
+        className="flex flex-col gap-3 bg-white p-4 shadow-md rounded"
+        onSubmit={handleCreateBudget}
+      >
         <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
@@ -123,37 +125,42 @@ function Budgets() {
         />
         <button
           type="submit"
-          className="bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition-colors"
+          className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 transition-colors"
         >
           Criar Orçamento
         </button>
       </form>
       {errorMsg && <p className="text-red-600 mt-2">{errorMsg}</p>}
 
-      <h3 className="text-xl font-semibold mt-4 mb-2">Lista de Orçamentos</h3>
-      <div className="grid gap-2">
-        {budgets.map((b) => (
-          <div
-            key={b.id}
-            className="border border-gray-300 p-3 rounded bg-white shadow-sm"
-          >
-            <p>
-              <strong>Categoria: </strong>
-              {b.category ? b.category.name : 'N/A'}
-            </p>
-            <p>
-              <strong>Limite: </strong>
-              {b.amount_limit}€
-            </p>
-            <p>
-              <strong>Período: </strong>
-              {b.start_date} até {b.end_date}
-            </p>
-          </div>
-        ))}
-      </div>
+      <h3 className="text-xl font-semibold mt-6">Lista de Orçamentos</h3>
+      <table className="w-full mt-4 bg-white rounded-lg shadow-md">
+        <thead className="bg-gray-100">
+          <tr>
+            <th className="p-2 text-left">Categoria</th>
+            <th className="p-2 text-left">Limite</th>
+            <th className="p-2 text-left">Período</th>
+            <th className="p-2 text-left">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {budgets.map((b) => (
+            <tr key={b.id} className="border-b">
+              <td className="p-2">{b.category ? b.category.name : 'N/A'}</td>
+              <td className="p-2">{b.amount_limit}€</td>
+              <td className="p-2">
+                {b.start_date} até {b.end_date}
+              </td>
+              <td className="p-2">
+                <button className="text-blue-500 hover:underline">Editar</button>{' '}
+                |{' '}
+                <button className="text-red-500 hover:underline">Remover</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
 export default Budgets;
