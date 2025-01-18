@@ -67,6 +67,22 @@ class TransactionViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+	def get_queryset(self):
+        qs = Transaction.objects.filter(account__user=self.request.user)
+        # Exemplos de query params: ?date_after=2025-01-01&date_before=2025-01-31&category=2
+        date_after = self.request.query_params.get('date_after')
+        date_before = self.request.query_params.get('date_before')
+        category_id = self.request.query_params.get('category')
+
+        if date_after:
+            qs = qs.filter(date__gte=date_after)
+        if date_before:
+            qs = qs.filter(date__lte=date_before)
+        if category_id:
+            qs = qs.filter(category__id=category_id)
+
+        return qs.order_by('-date')
+
 class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
     permission_classes = [IsAuthenticated]
@@ -91,3 +107,114 @@ class BudgetViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+	@action(detail=False, methods=['get'], url_path='check-alerts')
+    def check_alerts(self, request):
+        budgets = Budget.objects.filter(user=request.user)
+        alerts = []
+        for b in budgets:
+            # soma das despesas dessa categoria no período
+            expenses = Transaction.objects.filter(
+                account__user=request.user,
+                category=b.category,
+                date__gte=b.start_date,
+                date__lte=b.end_date,
+                transaction_type='expense'
+            ).aggregate(total=Sum('amount'))['total'] or 0
+
+            if expenses >= b.amount_limit * 0.8 and expenses < b.amount_limit:
+                alerts.append({
+                    'budget_id': b.id,
+                    'message': f"Já atingiu 80% do orçamento de {b.category.name}"
+                })
+            elif expenses >= b.amount_limit:
+                alerts.append({
+                    'budget_id': b.id,
+                    'message': f"Excedeu o orçamento de {b.category.name}"
+                })
+
+        return Response({'alerts': alerts})
+
+class UserPreferenceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Se não existir preferências para o user, cria
+        preference, created = UserPreference.objects.get_or_create(user=request.user)
+        serializer = UserPreferenceSerializer(preference)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        preference, _ = UserPreference.objects.get_or_create(user=request.user)
+        serializer = UserPreferenceSerializer(preference, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)
+
+
+import csv
+from django.http import HttpResponse
+
+class TransactionExportView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        # Filtra as transações do user
+        transactions = Transaction.objects.filter(account__user=request.user)
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="transactions.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Date', 'Type', 'Category', 'Amount', 'Description'])
+
+        for t in transactions:
+            writer.writerow([
+                t.date,
+                t.transaction_type,
+                t.category.name if t.category else '',
+                t.amount,
+                t.description
+            ])
+
+        return response
+
+
+from rest_framework.parsers import MultiPartParser, FormParser
+
+class TransactionImportView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, format=None):
+        file_obj = request.FILES.get('file')
+        if not file_obj:
+            return Response({'error': 'No file provided'}, status=400)
+
+        import csv, io
+        decoded_file = file_obj.read().decode('utf-8')
+        reader = csv.reader(io.StringIO(decoded_file), delimiter=',')
+
+        # Assumimos que a primeira linha contém cabeçalhos
+        next(reader, None) 
+
+        account = Account.objects.filter(user=request.user).first()
+        if not account:
+            return Response({'error': 'No account found for user'}, status=400)
+
+        for row in reader:
+            # row -> [date, type, category_name, amount, description]
+            date_str, tx_type, category_name, amount_str, desc = row
+            category, _ = Category.objects.get_or_create(name=category_name)
+            Transaction.objects.create(
+                account=account,
+                category=category,
+                transaction_type=tx_type.lower(),
+                amount=float(amount_str),
+                description=desc,
+                date=date_str
+            )
+
+        return Response({'message': 'Import successful'})
+

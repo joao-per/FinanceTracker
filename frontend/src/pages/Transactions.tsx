@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import '../css/style.css';
 
 
 function Transactions() {
+  const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [categories, setCategories]     = useState([]);
   const [accounts, setAccounts]         = useState([]);
@@ -19,8 +21,13 @@ function Transactions() {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      navigate('/');
+      return;
+    }
     loadData();
-  }, []);
+  }, [navigate]);
 
   const loadData = async () => {
     try {

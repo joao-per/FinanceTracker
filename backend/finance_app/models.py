@@ -53,3 +53,24 @@ class Budget(models.Model):
 
     def __str__(self):
         return f"Orçamento {self.category.name} para {self.user.username}"
+
+class UserPreference(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='preference')
+    dark_mode = models.BooleanField(default=False)
+    language = models.CharField(max_length=5, default='pt')  # 'pt' ou 'en'
+    currency = models.CharField(max_length=10, default='EUR')  # 'EUR', 'USD', etc.
+
+    def __str__(self):
+        return f"Preferências de {self.user.username}"
+
+
+class RecurringTransaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField(blank=True)
+    frequency = models.CharField(max_length=20)  # daily, weekly, monthly
+    next_run_date = models.DateField()  # próxima data em que será gerada
+
+    def __str__(self):
+        return f"Recorrente: {self.description} para {self.user.username}"

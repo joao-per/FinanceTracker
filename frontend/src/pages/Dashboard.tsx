@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -13,12 +14,18 @@ import '../css/style.css';
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [transactions, setTransactions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      navigate('/');
+      return;
+    }
     fetchTransactions();
-  }, []);
+  }, [navigate]);
 
   const fetchTransactions = async () => {
     try {
