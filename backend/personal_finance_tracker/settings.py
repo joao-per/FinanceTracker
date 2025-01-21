@@ -7,8 +7,16 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-project")
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
-CORS_ALLOW_ALL_ORIGINS = True  # Se quiseres permitir tudo para testes
+CORS_ALLOW_ALL_ORIGINS = False  # Disable allowing all origins for production
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

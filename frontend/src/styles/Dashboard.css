@@ -1,0 +1,48 @@
+/* src/styles/Dashboard.css */
+.dashboard-container {
+	padding: 2rem;
+  }
+  
+  .dashboard-container h1 {
+	text-align: center;
+	margin-bottom: 2rem;
+	animation: slideIn 0.5s ease-out;
+  }
+  
+  @keyframes slideIn {
+	from { opacity: 0; transform: translateY(20px); }
+	to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .metrics {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	margin-bottom: 2rem;
+  }
+  
+  .metric-card {
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+	padding: 1rem;
+	margin: 0.5rem;
+	width: 150px;
+	text-align: center;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .metric-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+  
+  .chart-section {
+	margin-top: 2rem;
+  }
+  
+  .chart-section h2 {
+	text-align: center;
+	margin-bottom: 1rem;
+  }
+  

@@ -1,0 +1,53 @@
+/* src/styles/UploadInvoice.css */
+.upload-container {
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	animation: fadeIn 0.8s ease-out;
+  }
+  
+  .upload-container h2 {
+	margin-bottom: 1rem;
+  }
+  
+  .upload-form {
+	background: #fff;
+	padding: 1.5rem;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+	width: 100%;
+	max-width: 400px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	transition: transform 0.3s ease;
+  }
+  
+  .upload-form:hover {
+	transform: scale(1.02);
+  }
+  
+  .upload-form input[type="file"] {
+	margin-bottom: 1rem;
+  }
+  
+  .upload-form .btn {
+	padding: 0.6rem 1rem;
+	background: #6a11cb;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background 0.3s ease;
+  }
+  
+  .upload-form .btn:hover {
+	background: #2575fc;
+  }
+  
+  .upload-message {
+	margin-top: 1rem;
+	font-weight: bold;
+  }
+  

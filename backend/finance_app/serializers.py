@@ -1,11 +1,36 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Account, Category, Transaction, Document, Budget
+from .models import Account, Category, Transaction, Document, Budget, UserPreference, UserProfile
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    # avatar será um ImageField
+    class Meta:
+        model = UserProfile
+        fields = ['dark_mode', 'language', 'avatar']
 
 class UserSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'profile']
+        read_only_fields = ['id', 'username', 'email']
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    """Para actualizar email/password, etc."""
+    class Meta:
+        model = User
+        fields = ['email', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def update(self, instance, validated_data):
+        pwd = validated_data.pop('password', None)
+        instance.email = validated_data.get('email', instance.email)
+        if pwd:
+            instance.set_password(pwd)
+        instance.save()
+        return instance
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

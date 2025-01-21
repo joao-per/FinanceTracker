@@ -1,6 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def avatar_upload_path(instance, filename):
+    # Ex: user_<id>/avatar/<filename>
+    return f"user_{instance.user.id}/avatar/{filename}"
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    dark_mode = models.BooleanField(default=False)
+    language = models.CharField(max_length=5, default='pt')  # 'pt' ou 'en'
+    avatar = models.ImageField(upload_to=avatar_upload_path, null=True, blank=True)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}"
+
 class Account(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='accounts')
     name = models.CharField(max_length=100)
