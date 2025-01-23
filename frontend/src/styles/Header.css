@@ -4,12 +4,16 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 1rem 2rem;
-	background: linear-gradient(45deg, #6a11cb, #2575fc);
+	background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
 	color: #fff;
 	box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 	position: sticky;
 	top: 0;
 	z-index: 10;
+  }
+
+  .app.dark .header {
+	background: linear-gradient(135deg, #1f4283, #06288d);
   }
   
   .header .logo a {
@@ -65,11 +69,20 @@
 	align-items: center;
   }
   
+  /* Botão de mudança de idioma (select) */
   .header-controls select {
 	margin-right: 1rem;
 	padding: 0.3rem;
 	border-radius: 4px;
 	border: none;
 	font-size: 0.9rem;
+	background-color: var(--button-background);
+	color: var(--button-text);
+	outline: none;
+	transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .header-controls select:hover {
+	background-color: var(--accent-color);
   }
   

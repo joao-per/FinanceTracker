@@ -3,15 +3,15 @@
 	display: inline-block;
   }
   
-  /* Estilos para o switch */
   .switch {
 	position: relative;
 	display: inline-block;
-	width: 50px;
-	height: 26px;
+	width: 60px;
+	height: 30px;
+	cursor: pointer;
   }
   
-  .switch input { 
+  .switch input {
 	opacity: 0;
 	width: 0;
 	height: 0;
@@ -19,31 +19,37 @@
   
   .slider {
 	position: absolute;
-	cursor: pointer;
 	top: 0; left: 0;
 	right: 0; bottom: 0;
 	background-color: #ccc;
-	transition: 0.4s;
-	border-radius: 26px;
+	border-radius: 30px;
+	transition: background-color 0.4s;
   }
   
-  .slider:before {
+  .slider::before {
 	position: absolute;
 	content: "";
-	height: 20px;
-	width: 20px;
-	left: 3px;
-	bottom: 3px;
-	background-color: white;
-	transition: 0.4s;
+	height: 26px;
+	width: 26px;
+	left: 2px;
+	bottom: 2px;
+	background-color: #fff;
 	border-radius: 50%;
+	transition: transform 0.4s;
+	/* Ícone sol (modo claro) */
+	background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="26" height="26" viewBox="0 0 24 24" fill="%23FDB813" xmlns="http://www.w3.org/2000/svg"><path d="M6.995 12c0 2.761 2.246 5.005 5.005 5.005s5.005-2.244 5.005-5.005c0-2.76-2.246-5.005-5.005-5.005S6.995 9.24 6.995 12z"/><path d="M12 2v2M12 20v2M4.93 4.93l1.414 1.414M17.656 17.656l1.414 1.414M2 12h2M20 12h2M4.93 19.07l1.414-1.414M17.656 6.344l1.414-1.414"/></svg>');
+	background-size: 60%;
+	background-repeat: no-repeat;
+	background-position: center;
   }
   
   input:checked + .slider {
-	background-color: #2196F3;
+	background-color: var(--accent-color);
   }
   
-  input:checked + .slider:before {
-	transform: translateX(24px);
+  input:checked + .slider::before {
+	transform: translateX(30px);
+	/* Ícone lua (modo dark) */
+	background-image: url('data:image/svg+xml;charset=UTF-8,<svg width="26" height="26" viewBox="0 0 24 24" fill="%23FFF" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79A9 9 0 0111.21 3a7 7 0 100 14 9 9 0 009.79-4.21z"/></svg>');
   }
   

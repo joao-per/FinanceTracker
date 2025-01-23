@@ -5,10 +5,12 @@
 	flex-direction: column;
 	align-items: center;
 	animation: fadeIn 0.8s ease-out;
+	transition: background-color 0.3s ease, color 0.3s ease;
   }
   
   .upload-container h2 {
 	margin-bottom: 1rem;
+	color: var(--secondary-color);
   }
   
   .upload-form {
@@ -21,7 +23,11 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	transition: transform 0.3s ease;
+	transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .app.dark .upload-form {
+	background: #1e1e1e;
   }
   
   .upload-form:hover {
@@ -30,24 +36,27 @@
   
   .upload-form input[type="file"] {
 	margin-bottom: 1rem;
+	color: var(--text-color);
   }
   
   .upload-form .btn {
 	padding: 0.6rem 1rem;
-	background: #6a11cb;
-	color: #fff;
+	background: var(--button-background);
+	color: var(--button-text);
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	transition: background 0.3s ease;
+	transition: background 0.3s ease, transform 0.3s ease;
   }
   
   .upload-form .btn:hover {
-	background: #2575fc;
+	background: var(--accent-color);
+	transform: scale(1.02);
   }
   
   .upload-message {
 	margin-top: 1rem;
 	font-weight: bold;
+	color: var(--text-color);
   }
   

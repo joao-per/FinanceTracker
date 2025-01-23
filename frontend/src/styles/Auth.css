@@ -5,17 +5,26 @@
 	align-items: center;
 	padding: 2rem;
 	min-height: calc(100vh - 80px);
-	background: linear-gradient(135deg, #f6d365, #fda085);
+	background: linear-gradient(135deg, #65e0f6, #1049ef);
   }
   
+  .app.dark .auth-container {
+	background: linear-gradient(135deg, #0b0b56, #010b3f);
+  }
+
   .auth-form {
-	background: rgba(255, 255, 255, 0.95);
+	background: #fff;
 	padding: 2rem;
 	border-radius: 12px;
 	box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 	width: 100%;
 	max-width: 400px;
 	animation: formEntry 0.5s ease-out;
+	transition: background-color 0.3s ease;
+  }
+  
+  .app.dark .auth-form {
+	background: #1c20265e;
   }
   
   .animate-form {
@@ -30,12 +39,14 @@
   .auth-form h2 {
 	text-align: center;
 	margin-bottom: 1rem;
+	color: var(--secondary-color);
   }
   
   .auth-form label {
 	display: block;
 	margin-bottom: 0.5rem;
 	font-weight: bold;
+	color: var(--text-color);
   }
   
   .auth-form input {
@@ -44,26 +55,35 @@
 	margin-bottom: 1rem;
 	border: 2px solid #ddd;
 	border-radius: 4px;
-	transition: border-color 0.3s ease;
+	transition: border-color 0.3s ease, background-color 0.3s ease;
+	background-color: #fff;
+	color: var(--text-color);
+  }
+  
+  .app.dark .auth-form input {
+	background-color: #333;
+	border-color: #555;
+	color: #eee;
   }
   
   .auth-form input:focus {
-	border-color: #6a11cb;
+	border-color: var(--secondary-color);
   }
   
   .auth-form .btn {
 	width: 100%;
 	padding: 0.7rem;
-	background: #6a11cb;
-	color: #fff;
+	background: var(--button-background);
+	color: var(--button-text);
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	transition: background 0.3s ease;
+	transition: background 0.3s ease, transform 0.3s ease;
   }
   
   .auth-form .btn:hover {
-	background: #2575fc;
+	background: var(--accent-color);
+	transform: scale(1.02);
   }
   
   .auth-form .error {
@@ -80,5 +100,5 @@
   
   .auth-form p {
 	text-align: center;
+	color: var(--text-color);
   }
-  
