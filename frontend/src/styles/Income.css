@@ -1,0 +1,160 @@
+.income-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+  }
+  
+  @media (max-width: 600px) {
+    .income-cards {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+  
+  .income-card {
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .income-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .income-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+  }
+  
+  .income-card.salary::before {
+    background: #4CAF50;
+  }
+  
+  .income-card.investments::before {
+    background: #2196F3;
+  }
+  
+  .income-card.others::before {
+    background: #9C27B0;
+  }
+  
+  .app.dark .income-card {
+    background: #2d2d2d;
+    color: #e0e0e0;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+  }
+  
+  .app.dark .income-card:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  }
+  
+  .app.dark .income-card.salary::before {
+    background: #66BB6A; 
+  }
+  
+  .app.dark .income-card.investments::before {
+    background: #2196F3;
+  }
+  
+  .app.dark .income-card.others::before {
+    background: #BA68C8; 
+  }
+
+  .income-category {
+    font-size: 0.85rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+  
+  .app.dark .income-category {
+    color: #bbb;
+  }
+  
+  .financial-chart {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .app.dark .financial-chart {
+    background: #2d2d2d;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+  }
+  
+  .net-positive {
+    color: #4CAF50;
+    font-weight: bold;
+  }
+  
+  .app.dark .net-positive {
+    color: #66BB6A;
+  }
+  
+  .net-negative {
+    color: #F44336;
+    font-weight: bold;
+  }
+  
+  .app.dark .net-negative {
+    color: #EF5350;
+  }
+  
+  .chart-section {
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+  
+  .chart-container {
+    width: 100%;
+    height: auto;
+    min-height: 350px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+  }
+  
+  .app.dark .chart-container {
+    background: #2d2d2d;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
+  }
+  
+  .recharts-wrapper {
+    width: 100% !important;
+  }
+  
+  .recharts-surface {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .recharts-tooltip {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .app.dark .recharts-tooltip {
+    background: #2d2d2d !important;
+    border: 1px solid #444 !important;
+    color: #e0e0e0 !important;
+  }
+  
+  .app {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }

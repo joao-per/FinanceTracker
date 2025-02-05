@@ -29,6 +29,11 @@ const resources = {
       invalid_credentials: "Invalid credentials",
       account_created: "Account created successfully! You can now log in.",
       error_register: "Error registering",
+      financial_overview: "Financial Overview",
+      financial_health: "Financial Balance",
+      salary: "Salary",
+      investments: "Investments",
+      others: "Others",
       // Outras traduções necessárias...
     }
   },
@@ -58,6 +63,11 @@ const resources = {
       invalid_credentials: "Credenciais inválidas",
       account_created: "Conta criada com sucesso! Pode fazer login.",
       error_register: "Erro ao registar",
+      financial_overview: "Visão Global Financeira",
+      financial_health: "Saude Financeira",
+      salary: "Salário",
+      investments: "Investimentos",
+      others: "Outros",
       // Outras traduções necessárias...
     }
   }

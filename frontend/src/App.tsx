@@ -4,9 +4,11 @@ import Login from './components/Login.tsx';
 import Register from './components/Register.tsx';
 import Dashboard from './components/Dashboard.tsx';
 import UploadInvoice from './components/UploadInvoice.tsx';
+import Income from './components/Income.tsx';
 import Header from './components/Header.tsx';
 import { useDarkMode } from './hooks/useDarkMode.tsx';
 import { AuthProvider, useAuth } from './hooks/useAuth.tsx';
+
 
 const App: React.FC = () => {
   const [isDarkMode, toggleDarkMode] = useDarkMode();
@@ -46,6 +48,10 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
           <Route
             path="/upload"
             element={isAuthenticated ? <UploadInvoice /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/income"
+            element={isAuthenticated ? <Income /> : <Navigate to="/login"/>}
           />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
