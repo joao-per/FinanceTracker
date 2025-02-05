@@ -28,6 +28,7 @@ export const fetchDashboardData = async (token: string | null) => {
 export const fetchIncomeData = async () => {
   return new Promise<{
     income: {
+      id: string;
       salary: { amount: number; currency: string };
       investments: { type: string; amount: number }[];
       others: { amount: number; currency: string };
@@ -38,6 +39,7 @@ export const fetchIncomeData = async () => {
       resolve({
         income: [
           {
+            id:'1',
             salary: { amount: 5000, currency: 'EUR' },
             investments: [
               { type: 'Stocks', amount: 2000 },
@@ -47,6 +49,7 @@ export const fetchIncomeData = async () => {
             totalIncome: 5000 + 2000 + 1000 + 1000,
           },
           {
+            id:'2',
             salary: { amount: 5200, currency: 'EUR' },
             investments: [
               { type: 'Stocks', amount: 2100 },
@@ -56,6 +59,7 @@ export const fetchIncomeData = async () => {
             totalIncome: 5200 + 2100 + 1100 + 1200,
           },
           {
+            id:'3',
             salary: { amount: 5300, currency: 'EUR' },
             investments: [
               { type: 'Stocks', amount: 2200 },
@@ -65,6 +69,7 @@ export const fetchIncomeData = async () => {
             totalIncome: 5300 + 2200 + 1200 + 1300,
           },
           {
+            id:'4',
             salary: { amount: 5400, currency: 'EUR' },
             investments: [
               { type: 'Stocks', amount: 2300 },
@@ -74,6 +79,7 @@ export const fetchIncomeData = async () => {
             totalIncome: 5400 + 2300 + 1300 + 1400,
           },
           {
+            id:'5',
             salary: { amount: 5500, currency: 'EUR' },
             investments: [
               { type: 'Stocks', amount: 2400 },
@@ -83,6 +89,7 @@ export const fetchIncomeData = async () => {
             totalIncome: 5500 + 2400 + 1400 + 1500,
           },
           {
+            id:'6',
             salary: { amount: 5600, currency: 'EUR' },
             investments: [
               { type: 'Stocks', amount: 2500 },
