@@ -28,6 +28,7 @@ import UploadInvoice from './components/UploadInvoice.tsx';
 import Income from './components/Income.tsx';
 import { useTranslation } from 'react-i18next';
 import { AuthProvider, useAuth } from './hooks/useAuth.tsx';
+import Expenses from './components/Expense.tsx';
 
 const lightTheme = createTheme({
   palette: {
@@ -205,6 +206,10 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
           <Route
             path="/income"
             element={isAuthenticated ? <Income /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/expenses"
+            element={isAuthenticated ? <Expenses /> : <Navigate to="/login" />}
           />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>

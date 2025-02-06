@@ -144,7 +144,7 @@ const Dashboard: React.FC = () => {
                       </Avatar>
                     </Box>
                     <Typography variant="h4" sx={{ mt: 2, color: theme.palette.text.primary }}>
-                      {metric.value}
+                      {metric.value} €
                     </Typography>
                     <Button
                       endIcon={<ArrowForward />}

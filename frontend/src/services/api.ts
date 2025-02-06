@@ -104,4 +104,72 @@ export const fetchIncomeData = async () => {
   });
 };
 
+export const fetchExpensesData = async () => {
+  return new Promise<{
+    expenses: {
+      id: string;
+      category: string;
+      amount: number;
+      currency: string;
+      description: string;
+      date: string;
+    }[];
+  }>((resolve) => {
+    setTimeout(() => {
+      resolve({
+        expenses: [
+          {
+            id: '1',
+            category: 'Housing',
+            amount: 1200,
+            currency: 'EUR',
+            description: 'Monthly rent',
+            date: '2023-10-01',
+          },
+          {
+            id: '2',
+            category: 'Utilities',
+            amount: 200,
+            currency: 'EUR',
+            description: 'Electricity bill',
+            date: '2023-10-05',
+          },
+          {
+            id: '3',
+            category: 'Transportation',
+            amount: 150,
+            currency: 'EUR',
+            description: 'Fuel',
+            date: '2023-10-10',
+          },
+          {
+            id: '4',
+            category: 'Food',
+            amount: 400,
+            currency: 'EUR',
+            description: 'Groceries',
+            date: '2023-10-15',
+          },
+          {
+            id: '5',
+            category: 'Entertainment',
+            amount: 100,
+            currency: 'EUR',
+            description: 'Movie tickets',
+            date: '2023-10-20',
+          },
+          {
+            id: '6',
+            category: 'Health',
+            amount: 50,
+            currency: 'EUR',
+            description: 'Medication',
+            date: '2023-10-25',
+          },
+        ],
+      });
+    }, 1000);
+  });
+};
+
 

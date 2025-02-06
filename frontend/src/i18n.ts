@@ -52,7 +52,19 @@ const resources = {
       hours_ago: "{{hour}} hours ago",
       switch_language: "Switch Language",
       dark_mode: "Dark Mode",
-      light_mode: "Light Mode"
+      light_mode: "Light Mode",
+      expenses_overview: "Financial Expenses",
+      total_expenses: "Total Expenses",
+      expenses_details: "Expense Details",
+      amount: "Amount",
+      category: "Category",
+      description: "Description",
+      date: "Date",
+      housing: "Housing",
+      utilities: "Utilities",
+      transportation: "Transportation",
+      food: "Food",
+      entertainment: "Entertainment"
 
       
       // Outras traduções necessárias...
@@ -107,7 +119,19 @@ const resources = {
       hours_ago: "{{hour}} horas atrás",
       switch_language: "Mudar Língua",
       dark_mode: "Modo Escuro",
-      light_mode: "Modo Claro"
+      light_mode: "Modo Claro",
+      expenses_overview: "Visão Global de Despesas",
+      total_expenses: "Despesas Totais",
+      expenses_details: "Detalhes de Despesas",
+      amount: "Quantia",
+      category: "Categoria",
+      description: "Descrição",
+      date: "Data",
+      housing: "Casas",
+      utilities: "Utilidades",
+      transportation: "Transportes",
+      food: "Alimentação",
+      entertainment: "Entretenimento"
       // Outras traduções necessárias...
     }
   }
