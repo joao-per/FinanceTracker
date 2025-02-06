@@ -64,9 +64,20 @@ const resources = {
       utilities: "Utilities",
       transportation: "Transportation",
       food: "Food",
-      entertainment: "Entertainment"
+      entertainment: "Entertainment",
+      health:  "Health",
+      expenses_chart: "Expenses Chart",
+      profile: "Profile",
+      name: "Name",
+      company: "Company",
+      job_title: "Job Title",
+      current_password: "Current Password",
+      new_password: "New Password",
+      confirm_password:"Confirm Password",
+      change_password: "Change Password",
+      save_changes: "Save Changes",
 
-      
+
       // Outras traduções necessárias...
     }
   },
@@ -131,7 +142,19 @@ const resources = {
       utilities: "Utilidades",
       transportation: "Transportes",
       food: "Alimentação",
-      entertainment: "Entretenimento"
+      entertainment: "Entretenimento",
+      health: "Saúde",
+      expenses_chart: "Gráfico de Despesas",
+      profile: "Perfil",
+      name: "Nome",
+      company: "Empresa",
+      job_title: "Cargo",
+      current_password: "Palavra-passe Atual",
+      new_password: "Nova Palavra-passe",
+      confirm_password:"Confirmar Palavra-passe",
+      change_password: "Alterar Palavra-passe",
+      save_changes: "Guardar Alterações",
+
       // Outras traduções necessárias...
     }
   }

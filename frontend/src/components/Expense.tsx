@@ -30,18 +30,10 @@ import {
   DialogTitle,
   LinearProgress,
   useTheme,
-  Avatar,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CategoryIcon from '@mui/icons-material/Category';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import DescriptionIcon from '@mui/icons-material/Description';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface Expense {
   id: string;
@@ -127,6 +119,16 @@ const Expenses: React.FC = () => {
 
   const paginatedData = expensesData?.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
+  const chartData = expensesData?.reduce((acc, expense) => {
+    const existingCategory = acc.find((item) => item.category === expense.category);
+    if (existingCategory) {
+      existingCategory.amount += expense.amount;
+    } else {
+      acc.push({ category: t(expense.category.toLowerCase()), amount: expense.amount });
+    }
+    return acc;
+  }, [] as { category: string; amount: number }[]);
+
   return (
     <Box sx={{ p: 3, backgroundColor: theme.palette.background.default, minHeight: '100vh' }}>
       <Typography variant="h4" gutterBottom sx={{ color: theme.palette.text.primary }}>
@@ -154,7 +156,7 @@ const Expenses: React.FC = () => {
                     {t('total_expenses')}
                   </Typography>
                   <Typography variant="h4" sx={{ color: theme.palette.error.main }}>
-                    {aggregatedData?.totalAmount.toLocaleString()} 
+                    {aggregatedData?.totalAmount.toLocaleString()}
                   </Typography>
                 </CardContent>
               </Card>
@@ -263,9 +265,16 @@ const Expenses: React.FC = () => {
             <Skeleton variant="rectangular" height={400} />
           ) : (
             <Box sx={{ p: 3, backgroundColor: theme.palette.background.paper, borderRadius: 2 }}>
-              <Typography variant="body1" sx={{ color: theme.palette.text.secondary }}>
-                Chart Placeholder (Replace with your chart component)
-              </Typography>
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="category" />
+                  <YAxis />
+                  <ChartTooltip />
+                  <Legend />
+                  <Bar dataKey="amount" fill={theme.palette.primary.main} />
+                </BarChart>
+              </ResponsiveContainer>
             </Box>
           )}
         </Box>

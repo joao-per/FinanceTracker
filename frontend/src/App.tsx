@@ -13,6 +13,7 @@ import {
   Toolbar,
   useTheme,
   Typography,
+  Avatar,
   ListItemButton,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -28,7 +29,9 @@ import UploadInvoice from './components/UploadInvoice.tsx';
 import Income from './components/Income.tsx';
 import { useTranslation } from 'react-i18next';
 import { AuthProvider, useAuth } from './hooks/useAuth.tsx';
+
 import Expenses from './components/Expense.tsx';
+import Profile from './components/Profile.tsx';
 
 const lightTheme = createTheme({
   palette: {
@@ -139,6 +142,7 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
               </ListItemButton>
+             
             </>
           ) : (
             <>
@@ -153,6 +157,11 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
         </List>
 
         <Box sx={{ p: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
+        <ListItemButton component={Link} to="/profile">
+          <ListItemIcon>
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </ListItemButton>
           <ListItemButton onClick={toggleDarkMode}>
             <ListItemIcon>
               {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
@@ -211,6 +220,11 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
             path="/expenses"
             element={isAuthenticated ? <Expenses /> : <Navigate to="/login" />}
           />
+          <Route
+            path="/profile"
+            element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+          />
+          
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </Box>
