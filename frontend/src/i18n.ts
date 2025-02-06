@@ -76,6 +76,16 @@ const resources = {
       confirm_password:"Confirm Password",
       change_password: "Change Password",
       save_changes: "Save Changes",
+      welcome_back: "Welcome Back",
+      login_to_manage: "Login to manage your account",
+      sign_in: "Sign In",
+      create_account: "Create Account",
+      forgot_password: "Forgot Password?",
+
+
+
+
+
 
 
       // Outras traduções necessárias...
@@ -154,7 +164,11 @@ const resources = {
       confirm_password:"Confirmar Palavra-passe",
       change_password: "Alterar Palavra-passe",
       save_changes: "Guardar Alterações",
-
+      welcome_back: "Bem-vindo de Volta",
+      login_to_manage: "Faça login para gerir a sua conta",
+      create_account: "Criar Conta",
+      forgot_password: "Esqueceu a Palavra-passe?",
+      sign_in: "Entrar",
       // Outras traduções necessárias...
     }
   }

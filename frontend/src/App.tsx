@@ -13,7 +13,6 @@ import {
   Toolbar,
   useTheme,
   Typography,
-  Avatar,
   ListItemButton,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -29,7 +28,6 @@ import UploadInvoice from './components/UploadInvoice.tsx';
 import Income from './components/Income.tsx';
 import { useTranslation } from 'react-i18next';
 import { AuthProvider, useAuth } from './hooks/useAuth.tsx';
-
 import Expenses from './components/Expense.tsx';
 import Profile from './components/Profile.tsx';
 
@@ -77,7 +75,7 @@ interface AppContentProps {
 
 const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) => {
   const { isAuthenticated, logout } = useAuth();
-  const { i18n,t } = useTranslation();
+  const { i18n, t } = useTranslation();
   const theme = useTheme();
   
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -97,20 +95,44 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
 
   return (
     <Box sx={{ display: 'flex' }}>
+      <Box
+        sx={{
+          position: 'fixed',
+          left: 16,
+          top: 16,
+          zIndex: theme.zIndex.drawer + 1,
+          backgroundColor: theme.palette.background.paper,
+          borderRadius: '50%',
+          boxShadow: theme.shadows[2],
+          '&:hover': {
+            boxShadow: theme.shadows[4]
+          }
+        }}
+      >
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerToggle}
+          sx={{
+            '&:hover': {
+              backgroundColor: theme.palette.action.hover
+            }
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+      </Box>
+
       <Drawer
         variant="temporary"
         open={drawerOpen}
         onClose={handleDrawerToggle}
         ModalProps={{ keepMounted: true }}
         sx={{
-          width: 240,
-          flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: 240,
             boxSizing: 'border-box',
             backgroundColor: theme.palette.background.paper,
-            display: 'flex',
-            flexDirection: 'column',
           },
         }}
       >
@@ -122,46 +144,43 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
-                <ListItemText primary="Dashboard" />
+                <ListItemText primary={t('dashboard')} />
               </ListItemButton>
               <ListItemButton component={Link} to="/upload">
                 <ListItemIcon>
                   <UploadIcon />
                 </ListItemIcon>
-                <ListItemText primary="Upload Invoices" />
+                <ListItemText primary={t('upload_invoices')} />
               </ListItemButton>
               <ListItemButton component={Link} to="/income">
                 <ListItemIcon>
                   <UploadIcon />
                 </ListItemIcon>
-                <ListItemText primary="Income" />
+                <ListItemText primary={t('income')} />
               </ListItemButton>
               <ListItemButton onClick={handleLogout}>
                 <ListItemIcon>
                   <LogoutIcon />
                 </ListItemIcon>
-                <ListItemText primary="Logout" />
+                <ListItemText primary={t('logout')} />
               </ListItemButton>
-             
             </>
           ) : (
             <>
               <ListItemButton component={Link} to="/login">
-                <ListItemText primary="Login" />
+                <ListItemText primary={t('login')} />
               </ListItemButton>
               <ListItemButton component={Link} to="/register">
-                <ListItemText primary="Register" />
+                <ListItemText primary={t('register')} />
               </ListItemButton>
             </>
           )}
         </List>
 
         <Box sx={{ p: 2, borderTop: `1px solid ${theme.palette.divider}` }}>
-        <ListItemButton component={Link} to="/profile">
-          <ListItemIcon>
-          </ListItemIcon>
-          <ListItemText primary="Profile" />
-        </ListItemButton>
+          <ListItemButton component={Link} to="/profile">
+            <ListItemText primary={t('profile')} />
+          </ListItemButton>
           <ListItemButton onClick={toggleDarkMode}>
             <ListItemIcon>
               {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
@@ -179,22 +198,17 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
         </Box>
       </Drawer>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-           {/* O nome da app deveria de estar guardado no Redux ou numa env var */}
-          <Typography variant="h6" noWrap component="div"> 
-            Personal Finance Tracker 
-          </Typography>
-        </Toolbar>
+      <Box 
+        component="main" 
+        sx={{ 
+          flexGrow: 1,
+          p: 3,
+          width: '100%',
+          overflow: 'auto',
+          minHeight: '100vh'
+        }}
+      >
+        <Toolbar />
         <Routes>
           <Route
             path="/login"
@@ -224,7 +238,6 @@ const AppContent: React.FC<AppContentProps> = ({ isDarkMode, toggleDarkMode }) =
             path="/profile"
             element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
           />
-          
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </Box>
