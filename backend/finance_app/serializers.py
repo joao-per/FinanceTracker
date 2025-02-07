@@ -45,8 +45,8 @@ class AccountSerializer(serializers.ModelSerializer):
 
 class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Document
-        fields = '__all__'
+       model = Document
+       fields = ['id', 'file', 'uploaded_at', 'transaction', 'description']
 
 class TransactionSerializer(serializers.ModelSerializer):
     documents = DocumentSerializer(many=True, read_only=True)

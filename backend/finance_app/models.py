@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
+
 def avatar_upload_path(instance, filename):
     # Ex: user_<id>/avatar/<filename>
     return f"user_{instance.user.id}/avatar/{filename}"
@@ -53,6 +56,7 @@ class Document(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='documents')
     file = models.FileField(upload_to=user_directory_path)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"Documento para transação {self.transaction.id}"
